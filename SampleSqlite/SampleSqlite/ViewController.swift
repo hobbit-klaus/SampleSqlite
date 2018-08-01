@@ -47,7 +47,6 @@ class ViewController: UIViewController {
             print(error)
         }
 
-
     }
 
     @IBAction func insertUser() {
@@ -72,6 +71,14 @@ class ViewController: UIViewController {
             print(name)
             print(email)
 
+            let insertUser = self.usersTable.insert(self.name <- name, self.email <- email)
+
+            do {
+                try self.database.run(insertUser)
+            } catch {
+                print(error)
+            }
+
         }
 
         alert.addAction(action)
@@ -82,6 +89,14 @@ class ViewController: UIViewController {
     @IBAction func listUsers() {
         print("LIST TAPPED")
 
+        do {
+            let users = try self.database.prepare(self.usersTable)
+            for user in users {
+                print("userId: \(user[self.id]), name: \(user[self.name]), email: \(user[self.email])")
+            }
+        } catch {
+            print(error)
+        }
     }
 
     @IBAction func updateUser() {
@@ -134,4 +149,3 @@ class ViewController: UIViewController {
     }
 
 }
-
