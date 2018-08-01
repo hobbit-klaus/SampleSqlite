@@ -114,6 +114,7 @@ class ViewController: UIViewController {
 
         let action = UIAlertAction(title: "Submit", style: .default) { (_) in
             guard let userIdString = alert.textFields?.first?.text,
+                  let userId = Int(userIdString),
                   let email = alert.textFields?.last?.text
                     else {
                 return
@@ -121,6 +122,13 @@ class ViewController: UIViewController {
             print(userIdString)
             print(email)
 
+            let user = self.usersTable.filter(self.id == userId)
+            let updateUser = user.update(self.email <- email)
+            do {
+                try self.database.run(updateUser)
+            } catch {
+                print(error)
+            }
         }
 
         alert.addAction(action)
