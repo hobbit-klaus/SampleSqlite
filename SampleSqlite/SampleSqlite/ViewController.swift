@@ -145,11 +145,20 @@ class ViewController: UIViewController {
         }
 
         let action = UIAlertAction(title: "Submit", style: .default) { (_) in
-            guard let userIdString = alert.textFields?.first?.text else {
+            guard let userIdString = alert.textFields?.first?.text,
+                  let userId = Int(userIdString)
+                    else {
                 return
             }
             print(userIdString)
 
+            let user = self.usersTable.filter(self.id == userId)
+            let deleteUser = user.delete()
+            do {
+                try self.database.run(deleteUser)
+            } catch {
+                print(error)
+            }
         }
 
         alert.addAction(action)
